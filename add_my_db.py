@@ -5,7 +5,9 @@ def create_noncongruence_modular_curve_db():
         search_columns={'int': ['genus', 'psl2z_index', 'n_c', 'n_e2', 'n_e3'],
                         'int[][]': ['cusp_widths'],
                         'text': ['permS', 'permR', 'permT', 'label', 'monodromy_group', 'K', 'curve', 'base_field_label'],
-                        'text[]': ['mf_spaces', 'embeddings', 'friends'],
+                        'text[]': ['mf_spaces', 'friends'],
+                        'text[][]': ['passport_reps'],
+                        'double precision[][]': ['passport_embeddings'],
                         'bool': ['is_congruence'],
                         },
         label_col='label',
@@ -26,8 +28,9 @@ def create_noncongruence_modular_curve_db():
                             'K': "Field of definition",
                             'curve': "Belyi map / elliptic curve / hyperelliptic curve",
                             'mf_spaces': "Spaces of modular forms",
-                            'embeddings': "Embeddings of K into CC",
                             'friends': "Related LMFDB objects",
+                            'passport_reps': "Passport representatives",
+                            'passport_embeddings': "Embeddings of the passport representatives into CC",
                             'is_congruence': "True if the subgroup is a congruence subgroup",
                         },
     )
@@ -99,8 +102,9 @@ def insert_example_entry():
                                             'K': 'v^2 - v + 1',
                                             'curve': '((x^2 + ((331776*v + 195357360)*u)*x + (62079188631552*v + 1006988320853568)*u^2)^3*(x + (-1866240*v + 3015384)*u))/((x + (-145152*v - 3938088)*u)^6) = 1728 + ((x^3 + ((-1679616*v - 418281336)*u)*x^2 + ((706462210805760*v - 9954051182869824)*u^2)*x + (14652604381524017135616*v - 29995890348016962943488)*u^3)^2*(x + (2488320*v + 2567832)*u))/((x + (-145152*v - 3938088)*u)^6)',
                                             'mf_spaces': ['7.0.2.1.1.0.a.0.H', '7.0.2.1.1.0.a.2.M', '7.0.2.1.1.0.a.4.M', '7.0.2.1.1.0.a.4.C'], #Ignore weight 6 space for now
-                                            'embeddings': ["('(1 6)(2)(3 4)(5 7)', '(1 7 6)(2 3 5)(4)', '(1)(2 3 4 5 6 7)'): 0.50000000000000000? - 0.866025403784439?*I", "('(1 4)(2)(3 5)(6 7)', '(1 5 4)(2 3 6)(7)', '(1)(2 3 4 5 6 7)'): 0.50000000000000000? + 0.866025403784439?*I"],
                                             'friends': ['Belyi/7T4/6.1/3.3.1/2.2.2.1/a/'],
+                                            'passport_reps': [['(1 6)(2)(3 4)(5 7)', '(1 7 6)(2 3 5)(4)', '(1)(2 3 4 5 6 7)'],['(1 4)(2)(3 5)(6 7)', '(1 5 4)(2 3 6)(7)', '(1)(2 3 4 5 6 7)']],
+                                            'passport_embeddings': [[0.50000000000000000, -0.866025403784439], [0.50000000000000000, 0.866025403784439]], #Stored as [real, imag]
                                             'base_field_label': '2.0.3.1',
                                             'is_congruence': False,
                                             }
