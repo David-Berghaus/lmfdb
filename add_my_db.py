@@ -4,8 +4,9 @@ def create_noncongruence_modular_curve_db():
     db.create_table(name='noncong_modular_curve',
         search_columns={'int': ['genus', 'psl2z_index', 'n_c', 'n_e2', 'n_e3'],
                         'int[]': ['cusp_widths'],
-                        'text': ['permS', 'permR', 'permT', 'label', 'monodromy_group', 'K', 'L', 'v_L', 'belyi_map', 'elliptic_curve', 'hyperelliptic_curve'],
+                        'text': ['permS', 'permR', 'permT', 'label', 'monodromy_group', 'K', 'v_L', 'belyi_map', 'elliptic_curve', 'hyperelliptic_curve'],
                         'text[]': ['mf_spaces', 'friends', 'passport_reps'],
+                        'numeric[]': ['L'],
                         'double precision[]': ['passport_embeddings'],
                         'bool': ['is_congruence'],
                         },
@@ -104,7 +105,7 @@ def insert_example_entry():
                                             'permT': '(1)(2 3 4 5 6 7)',
                                             'monodromy_group': '42.1', #Groups/Abstract/42.1
                                             'K': '2.0.3.1', #NumberField/2.0.3.1
-                                            'L': 'x^2 - x + 1',
+                                            'L': [1,-1,1],
                                             'v_L': 'w',
                                             'belyi_map': '((x^2 + ((331776*v + 195357360)*u)*x + (62079188631552*v + 1006988320853568)*u^2)^3*(x + (-1866240*v + 3015384)*u))/((x + (-145152*v - 3938088)*u)^6) = 1728 + ((x^3 + ((-1679616*v - 418281336)*u)*x^2 + ((706462210805760*v - 9954051182869824)*u^2)*x + (14652604381524017135616*v - 29995890348016962943488)*u^3)^2*(x + (2488320*v + 2567832)*u))/((x + (-145152*v - 3938088)*u)^6)',
                                             'elliptic_curve': '\n',
