@@ -5,7 +5,7 @@ def create_noncongruence_modular_curve_db():
         search_columns={'int': ['genus', 'psl2z_index', 'n_c', 'n_e2', 'n_e3'],
                         'int[]': ['cusp_widths'],
                         'text': ['permS', 'permR', 'permT', 'label', 'monodromy_group', 'K', 'v_L', 'belyi_map', 'elliptic_curve', 'hyperelliptic_curve'],
-                        'text[]': ['mf_spaces', 'friends', 'passport_reps'],
+                        'text[]': ['friends', 'passport_reps'],
                         'numeric[]': ['L'],
                         'double precision[]': ['passport_embeddings'],
                         'bool': ['is_congruence'],
@@ -31,7 +31,6 @@ def create_noncongruence_modular_curve_db():
                             'belyi_map': "Belyi map",
                             'elliptic_curve': "Elliptic curve",
                             'hyperelliptic_curve': "Hyperelliptic curve",
-                            'mf_spaces': "Spaces of modular forms",
                             'friends': "Related LMFDB objects",
                             'passport_reps': "Passport representatives",
                             'passport_embeddings': "Embeddings of the passport representatives into CC",
@@ -42,8 +41,7 @@ def create_noncongruence_modular_curve_db():
 def create_noncongruence_modular_form_space():
     db.create_table(name='noncong_modular_form_space',
         search_columns={'int': ['dim', 'weight'],
-                        'text': ['type', 'label'],
-                        'text[]': ['basis'],
+                        'text': ['label', 'mf_curve'],
                         },
         label_col='label',
         sort=['label'],
@@ -51,16 +49,15 @@ def create_noncongruence_modular_form_space():
         #Add proper descriptions later
         col_description={'dim': "Dimension of the space",
                             'weight': "Weight of the forms in the space",
-                            'type': "Hauptmodul / Cusp Form / Holomorphic Modular Form",
                             'label': "Label of the space",
-                            'basis': "Basis of the space",
+                            'mf_curve': "Parent modular curve",
                         },
     )
 
 def create_noncongruence_modular_form():
     db.create_table(name='noncong_modular_form',
         search_columns={'int': ['weight', 'cusp_width', 'valuation'],
-                        'text': ['type', 'label', 'K', 'u_str'],
+                        'text': ['label', 'K', 'u_str', 'mf_space'],
                         'double precision[]': ['u', 'v'],
                         'text[]': ['coefficients'],
                         },
@@ -71,10 +68,10 @@ def create_noncongruence_modular_form():
         col_description={'weight': "Weight of the form",
                             'cusp_width': "Width of the cusp associated to the form",
                             'valuation': "Valuation of the form",
-                            'type': "Hauptmodul / Cusp Form / Holomorphic Modular Form",
                             'label': "Label of the form",
                             'K': "Field of definition",
                             'u_str': "Expression for u",
+                            'mf_space': "Parent modular form space",
                             'u': "Embedding of u into CC",
                             'v': "Embedding of v into CC",
                             'coefficients': "Coefficients of the form",
@@ -110,7 +107,6 @@ def insert_example_entry():
                                             'belyi_map': '((x^2 + ((331776*v + 195357360)*u)*x + (62079188631552*v + 1006988320853568)*u^2)^3*(x + (-1866240*v + 3015384)*u))/((x + (-145152*v - 3938088)*u)^6) = 1728 + ((x^3 + ((-1679616*v - 418281336)*u)*x^2 + ((706462210805760*v - 9954051182869824)*u^2)*x + (14652604381524017135616*v - 29995890348016962943488)*u^3)^2*(x + (2488320*v + 2567832)*u))/((x + (-145152*v - 3938088)*u)^6)',
                                             'elliptic_curve': None,
                                             'hyperelliptic_curve': None,
-                                            'mf_spaces': ['7.0.2.1.1.0.a.0.H', '7.0.2.1.1.0.a.2.M', '7.0.2.1.1.0.a.4.M', '7.0.2.1.1.0.a.4.C'], #Ignore weight 6 space for now
                                             'friends': ['Belyi/7T4/6.1/3.3.1/2.2.2.1/a/'],
                                             'passport_reps': [['(1 6)(2)(3 4)(5 7)', '(1 7 6)(2 3 5)(4)', '(1)(2 3 4 5 6 7)'],['(1 4)(2)(3 5)(6 7)', '(1 5 4)(2 3 6)(7)', '(1)(2 3 4 5 6 7)']],
                                             'passport_embeddings': [[0.50000000000000000, -0.866025403784439], [0.50000000000000000, 0.866025403784439]], #Stored as [real, imag]
@@ -121,28 +117,23 @@ def insert_example_entry():
     #Insert noncongruence modular form spaces
     db.noncong_modular_form_space.insert_many({'dim': 1,
                                                 'weight': 0, 
-                                                'type': 'Hauptmodul', 
                                                 'label': '7.0.2.1.1.0.a.0.H', 
-                                                'basis': ['7.0.2.1.1.0.a.0.h.a']
+                                                'mf_curve': '7.0.2.1.1.0.a',
                                                 },
                                                 {'dim': 1, 
                                                 'weight': 2, 
-                                                'type': 'Holomorphic Modular Form', 
                                                 'label': '7.0.2.1.1.0.a.2.M', 
-                                                'basis': ['7.0.2.1.1.0.a.2.m.a']
+                                                'mf_curve': '7.0.2.1.1.0.a',
                                                 },
                                                 {'dim': 3, 
-                                                'weight': 4, 
-                                                'type': 
-                                                'Holomorphic Modular Form', 
+                                                'weight': 4,  
                                                 'label': '7.0.2.1.1.0.a.4.M', 
-                                                'basis': ['7.0.2.1.1.0.a.4.m.a', '7.0.2.1.1.0.a.4.m.b', '7.0.2.1.1.0.a.4.m.c']
+                                                'mf_curve': '7.0.2.1.1.0.a',
                                                 },
                                                 {'dim': 1, 
                                                 'weight': 4, 
-                                                'type': 'Cusp Form', 
                                                 'label': '7.0.2.1.1.0.a.4.c', 
-                                                'basis': ['7.0.2.1.1.0.a.4.C.a']
+                                                'mf_curve': '7.0.2.1.1.0.a',
                                                 },
     )
 
@@ -150,10 +141,10 @@ def insert_example_entry():
     db.noncong_modular_form.insert_many({'weight': 0, 
                                             'cusp_width': 1, 
                                             'valuation': -1, 
-                                            'type': 'Hauptmodul', 
                                             'label': '7.0.2.1.1.0.a.0.H.a', 
                                             'K': '2.0.3.1', #NumberField/2.0.3.1
                                             'u_str': '1/823543', 
+                                            'mf_space': '7.0.2.1.1.0.a.0.H',
                                             'u': [1.21426567890201e-6, 0.0], #Stored as [real, imag]
                                             'v': [0.50000000000000000, -0.866025403784439], #Stored as [real, imag]
                                             'coefficients': ['1',
@@ -172,10 +163,10 @@ def insert_example_entry():
                                         {'weight': 2, 
                                             'cusp_width': 1, 
                                             'valuation': 0, 
-                                            'type': 'Holomorphic Modular Form', 
                                             'label': '7.0.2.1.1.0.a.2.M.a', 
                                             'K': '2.0.3.1', #NumberField/2.0.3.1
                                             'u_str': '1/823543', 
+                                            'mf_space': '7.0.2.1.1.0.a.2.M',
                                             'u': [1.21426567890201e-6, 0.0], #Stored as [real, imag]
                                             'v': [0.50000000000000000, -0.866025403784439], #Stored as [real, imag]
                                             'coefficients': ['1',
@@ -192,11 +183,11 @@ def insert_example_entry():
                                         },
                                         {'weight': 4, 
                                             'cusp_width': 1, 
-                                            'valuation': 0, 
-                                            'type': 'Holomorphic Modular Form', 
+                                            'valuation': 0,  
                                             'label': '7.0.2.1.1.0.a.4.M.a', 
                                             'K': '2.0.3.1', #NumberField/2.0.3.1
                                             'u_str': '1/823543', 
+                                            'mf_space': '7.0.2.1.1.0.a.4.M',
                                             'u': [1.21426567890201e-6, 0.0], #Stored as [real, imag]
                                             'v': [0.50000000000000000, -0.866025403784439], #Stored as [real, imag]
                                             'coefficients': ['1',
@@ -213,11 +204,11 @@ def insert_example_entry():
                                         },
                                         {'weight': 4, 
                                             'cusp_width': 1, 
-                                            'valuation': 1, 
-                                            'type': 'Holomorphic Modular Form', 
+                                            'valuation': 1,  
                                             'label': '7.0.2.1.1.0.a.4.M.b', 
                                             'K': '2.0.3.1', #NumberField/2.0.3.1
                                             'u_str': '1/823543', 
+                                            'mf_space': '7.0.2.1.1.0.a.4.M',
                                             'u': [1.21426567890201e-6, 0.0], #Stored as [real, imag]
                                             'v': [0.50000000000000000, -0.866025403784439], #Stored as [real, imag]
                                             'coefficients': ['1',
@@ -234,10 +225,10 @@ def insert_example_entry():
                                         {'weight': 4, 
                                             'cusp_width': 1, 
                                             'valuation': 2, 
-                                            'type': 'Holomorphic Modular Form', 
                                             'label': '7.0.2.1.1.0.a.4.M.c', 
                                             'K': '2.0.3.1', #NumberField/2.0.3.1 
                                             'u_str': '1/823543', 
+                                            'mf_space': '7.0.2.1.1.0.a.4.M',
                                             'u': [1.21426567890201e-6, 0.0], #Stored as [real, imag]
                                             'v': [0.50000000000000000, -0.866025403784439], #Stored as [real, imag]
                                             'coefficients': ['1',
@@ -253,10 +244,10 @@ def insert_example_entry():
                                         {'weight': 4, 
                                             'cusp_width': 1, 
                                             'valuation': 1, 
-                                            'type': 'Cusp Form', 
                                             'label': '7.0.2.1.1.0.a.4.C.a', 
                                             'K': '2.0.3.1', #NumberField/2.0.3.1 
                                             'u_str': '1/823543', 
+                                            'mf_space': '7.0.2.1.1.0.a.4.C',
                                             'u': [1.21426567890201e-6, 0.0], #Stored as [real, imag]
                                             'v': [0.50000000000000000, -0.866025403784439], #Stored as [real, imag]
                                             'coefficients': ['1',
