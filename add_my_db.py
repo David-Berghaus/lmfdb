@@ -132,7 +132,7 @@ def insert_example_entry():
                                                 },
                                                 {'dim': 1, 
                                                 'weight': 4, 
-                                                'label': '7.0.2.1.1.0.a.4.c', 
+                                                'label': '7.0.2.1.1.0.a.4.C', 
                                                 'mf_curve': '7.0.2.1.1.0.a',
                                                 },
     )
