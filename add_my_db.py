@@ -75,6 +75,7 @@ def create_noncongruence_modular_form():
                             'u': "Embedding of u into CC",
                             'v': "Embedding of v into CC",
                             'coefficient_numerators': "Numerators of the coefficients of the form",
+                            'coefficient_denominators': "Denominators of the coefficients of the form",
                         },
     )
 
@@ -90,7 +91,7 @@ def insert_example_entry():
     create_tables()
 
     #Insert noncongruence modular curve
-    db.noncong_modular_curve.insert_many({'label': '7.0.2.1.1.0.a',
+    db.noncong_modular_curve.insert_many([{'label': '7.0.2.1.1.0.a',
                                             'genus': 0,
                                             'psl2z_index': 7,
                                             'n_c': 2,
@@ -111,11 +112,11 @@ def insert_example_entry():
                                             'passport_reps': [['(1 6)(2)(3 4)(5 7)', '(1 7 6)(2 3 5)(4)', '(1)(2 3 4 5 6 7)'],['(1 4)(2)(3 5)(6 7)', '(1 5 4)(2 3 6)(7)', '(1)(2 3 4 5 6 7)']],
                                             'passport_embeddings': [[0.50000000000000000, -0.866025403784439], [0.50000000000000000, 0.866025403784439]], #Stored as [real, imag]
                                             'is_congruence': False,
-                                            }
+                                            }]
     )
 
     #Insert noncongruence modular form spaces
-    db.noncong_modular_form_space.insert_many({'dim': 1,
+    db.noncong_modular_form_space.insert_many([{'dim': 1,
                                                 'weight': 0, 
                                                 'label': '7.0.2.1.1.0.a.0.H', 
                                                 'mf_curve': '7.0.2.1.1.0.a',
@@ -134,11 +135,11 @@ def insert_example_entry():
                                                 'weight': 4, 
                                                 'label': '7.0.2.1.1.0.a.4.C', 
                                                 'mf_curve': '7.0.2.1.1.0.a',
-                                                },
+                                                }]
     )
 
     #Insert noncongruence modular forms
-    db.noncong_modular_form.insert_many({'weight': 0, 
+    db.noncong_modular_form.insert_many([{'weight': 0, 
                                             'cusp_width': 1, 
                                             'valuation': -1, 
                                             'label': '7.0.2.1.1.0.a.0.H.a', 
@@ -287,5 +288,5 @@ def insert_example_entry():
                                                                     3693875906243105612214715785400782642353505632256]
                                                                     ], #Only store first ten coefficients in this prototype
                                             'coefficient_denominators': [1, 1, 1, 1, 1, 1, 1, 1, 1],	
-                                        },
+                                        }]
     )
