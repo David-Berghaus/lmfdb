@@ -70,6 +70,8 @@ from . import hypergm
 assert hypergm
 from . import motives
 assert motives
+from . import noncongruence_modular_forms
+assert noncongruence_modular_forms
 from . import riemann
 assert riemann
 from . import lattice
